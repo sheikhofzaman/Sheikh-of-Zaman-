@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ashaka Cement - Facebook Connect 2025</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600;700&family=Roboto:wght@700&display=swap" rel="stylesheet"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Cropper.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <!-- html2canvas -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      color: #fff;
+    }
+
+    /* === FLYER === */
+    #flyer {
+      width: 1000px;
+      height: 1000px;
+      background: linear-gradient(135deg, #0f2b5c 0%, #001f3f 100%);
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+      color: white;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      font-weight: 600;
+    }
+
+    /* Curved Wave (Dark) */
+    #flyer::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 420px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 70%);
+      border-radius: 30px 30px 300px 300px / 30px 30px 150px 150px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* === FACEBOOK LOGOS (ALL 100% VISIBLE) === */
+    /* Big Center Watermark */
+    .fb-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 520px;
+      color: rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+      z-index: 0;
+      font-weight: 900;
+    }
+
+    /* Small FB Logos (3 places) */
+    .fb-small {
+      position: absolute;
+      font-size: 80px;
+      color: rgba(255, 255, 255, 0.2);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .fb-small.top-left { top: 100px; left: 100px; transform: rotate(-20deg); }
+    .fb-small.bottom-left { bottom: 120px; left: 80px; transform: rotate(15deg); }
+    .fb-small.bottom-right { bottom: 100px; right: 120px; transform: rotate(-10deg); }
+
+    /* Top-Right FB Logo */
+    .fb-logo {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      width: 65px;
+      height: 65px;
+      background: #1877f2;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4em;
+      box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4);
+      z-index: 10;
+      font-weight: 900;
+    }
+
+    /* Top Icons */
+    .top-icons {
+      position: absolute;
+      top: 50px;
+      right: 130px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+    .top-icons i {
+      width: 42px;
+      height: 42px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1em;
+      color: white;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Logo */
+    .logo {
+      position: absolute;
+      top: 50px;
+      left: 80px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.9em;
+      font-weight: 700;
+      color: white;
+      background: rgba(255,255,255,0.2);
+      padding: 10px 25px;
+      border-radius: 10px;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.3);
+      z-index: 10;
+    }
+
+    /* Date Circles */
+    .date-circle {
+      width: 145px;
+      height: 145px;
+      background: white;
+      color: #0f2b5c;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      position: absolute;
+      top: 380px;
+      z-index: 5;
+    }
+    .date-circle.left { left: 55px; }
+    .date-circle.right { right: 55px; }
+    .date-circle .month { font-size: 1.35em; text-transform: uppercase; color: #0077be; }
+    .date-circle .day { font-size: 3.2em; line-height: 1; color: #0f2b5c; }
+    .date-circle .year { font-size: 1.05em; color: #555; }
+
+    /* Photo Circle */
+    .photo-circle {
+      width: 330px;
+      height: 330px;
+      background: white;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 255px auto 0;
+      position: relative;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      border: 18px solid white;
+      z-index: 6;
+      cursor: pointer;
+    }
+    .photo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Name Box */
+    .name-box {
+      position: absolute;
+      top: 560px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1877f2;
+      color: white;
+      padding: 18px 45px;
+      border-radius: 50px;
+      text-align: center;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(24, 119, 242, 0.4);
+      z-index: 7;
+      min-width: 320px;
+      border: 3px solid white;
+      opacity: 1 !important;
+    }
+    .name-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9em;
+      margin: 0;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 1 !important;
+    }
+    .name-box p {
+      font-size: 1.15em;
+      margin: 6px 0 0;
+      font-weight: 500;
+      opacity: 1 !important;
+    }
+
+    /* VIP Badge */
+    .vip-badge {
+      position: absolute;
+      top: 235px;
+      right: 235px;
+      background: #e74c3c;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05em;
+      box-shadow: 0 6px 18px rgba(231, 76, 60, 0.5);
+      transform: rotate(18deg);
+      display: none;
+      z-index: 8;
+      border: 2px solid white;
+    }
+    .vip-badge.show { display: block; }
+
+    /* Event Title */
+    .event-title {
+      text-align: center;
+      margin-top: 85px;
+      position: relative;
+      z-index: 7;
+    }
+    .event-title h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 3.6em;
+      color: white;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+    .event-title h1::before,
+    .event-title h1::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 110px;
+      height: 5px;
+      background: white;
+      transform: translateY(-50%);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .event-title h1::before { left: -140px; }
+    .event-title h1::after { right: -140px; }
+
+    /* Bottom Bar */
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 65px;
+      font-size: 1.25em;
+      z-index: 7;
+    }
+    .contact, .website {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .contact i, .website i {
+      width: 55px;
+      height: 55px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .register-btn {
+      background: #00c6ff;
+      color: #001f3f;
+      padding: 18px 45px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.3em;
+      box-shadow: 0 10px 25px rgba(0, 198, 255, 0.4);
+      transition: all 0.3s ease;
+      border: 3px solid white;
+    }
+    .register-btn:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(0, 198, 255, 0.6);
+    }
+
+    /* === CONTROLS === */
+    .controls {
+      margin-top: 35px;
+      background: #112240;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+      max-width: 1000px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .controls input, .controls button {
+      margin: 12px;
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-size: 1.1em;
+    }
+    .controls input {
+      border: 2px solid #00c6ff;
+      background: #0a1a2e;
+      color: white;
+      width: 300px;
+    }
+    .controls button {
+      background: #00c6ff;
+      color: #001f3f;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .controls button:hover { background: #00aaff; transform: scale(1.05); }
+
+    /* Crop Modal */
+    .crop-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.97);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .crop-box {
+      background: #112240;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 90%;
+      text-align: center;
+      border: 2px solid #00c6ff;
+    }
+    .crop-box img { max-width: 100%; max-height: 60vh; border-radius: 15px; }
+    .crop-buttons button {
+      margin: 15px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.1em;
+    }
+    .crop-buttons .confirm { background: #27ae60; color: white; }
+    .crop-buttons .cancel { background: #e74c3c; color: white; }
+
+    /* Animation */
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(50px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .animate { animation: fadeInUp 1s ease-out forwards; }
+  </style>
+</head>
+<body>
+
+  <!-- FLYER -->
+  <div id="flyer">
+    <!-- Big Watermark -->
+    <div class="fb-watermark"><i class="fab fa-facebook-f"></i></div>
+
+    <!-- 3 Small FB Logos -->
+    <div class="fb-small top-left"><i class="fab fa-facebook-f"></i></div>
+    <div class="fb-small bottom-left"><i class="fab fa-facebook-f"></i></div>
+    <div class="fb-small bottom-right"><i class="fab fa-facebook-f"></i></div>
+
+    <!-- Top-Right FB Logo -->
+    <div class="fb-logo"><i class="fab fa-facebook-f"></i></div>
+
+    <!-- Top Icons -->
+    <div class="top-icons">
+      <i class="fas fa-user"></i>
+      <i class="fas fa-bell"></i>
+      <i class="fas fa-envelope"></i>
+      <i class="fas fa-cog"></i>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo">ASHAKA CEMENT</div>
+
+    <!-- Date Circles -->
+    <div class="date-circle left">
+      <div class="month">JUN</div>
+      <div class="day">21</div>
+      <div class="year">2050</div>
+    </div>
+    <div class="date-circle right">
+      <div class="month">Jan</div>
+      <div class="day">31</div>
+      <div class="year">2025</div>
+    </div>
+
+    <!-- Photo Circle -->
+    <div class="photo-circle" id="photoCircle">
+      <img id="userPhoto" src="https://via.placeholder.com/330/666/fff?text=Your+Photo" alt="Your Photo"/>
+    </div>
+    <div class="vip-badge" id="vipBadge">VIP</div>
+
+    <!-- Name Box -->
+    <div class="name-box animate">
+      <h3 id="userName">YOUR NAME</h3>
+      <p id="userTitle">TITLE GOES HERE</p>
+    </div>
+
+    <!-- Event Title -->
+    <div class="event-title animate">
+      <h1>Facebook Connect 2025</h1>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+      <div class="contact">
+        <i class="fas fa-phone"></i>
+        <span>00 123 456 789</span>
+      </div>
+      <a href="https://facebook.com/AshakaCement" target="_blank" class="register-btn">Register Now</a>
+      <div class="website">
+        <span>Visit our website</span>
+        <i class="fas fa-globe"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <input type="text" id="nameInput" placeholder="Your Full Name" />
+    <input type="text" id="titleInput" placeholder="Your Title / Role" />
+    <br/>
+    <button id="uploadBtn">Upload & Crop Photo</button>
+    <label><input type="checkbox" id="vipCheck"/> VIP Guest</label>
+    <br/>
+    <button id="downloadBtn">Download Flyer (300 DPI PNG)</button>
+  </div>
+
+  <!-- Hidden File Input -->
+  <input type="file" id="photoInput" accept="image/*" style="display:none"/>
+
+  <!-- Crop Modal -->
+  <div class="crop-modal" id="cropModal">
+    <div class="crop-box">
+      <img id="cropImage" src="" alt="Crop"/>
+      <div class="crop-buttons">
+        <button class="confirm" id="cropConfirm">Use This</button>
+        <button class="cancel" id="cropCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const nameInput = document.getElementById('nameInput');
+    const titleInput = document.getElementById('titleInput');
+    const userName = document.getElementById('userName');
+    const userTitle = document.getElementById('userTitle');
+    const photoInput = document.getElementById('photoInput');
+    const userPhoto = document.getElementById('userPhoto');
+    const vipCheck = document.getElementById('vipCheck');
+    const vipBadge = document.getElementById('vipBadge');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const cropModal = document.getElementById('cropModal');
+    const cropImage = document.getElementById('cropImage');
+    const cropConfirm = document.getElementById('cropConfirm');
+    const cropCancel = document.getElementById('cropCancel');
+
+    let cropper = null;
+
+    // Load saved
+    window.addEventListener('load', () => {
+      const saved = JSON.parse(localStorage.getItem('ashakaDarkFlyer') || '{}');
+      if (saved.name) { nameInput.value = saved.name; userName.textContent = saved.name.toUpperCase(); }
+      if (saved.title) { titleInput.value = saved.title; userTitle.textContent = saved.title; }
+      if (saved.photo) userPhoto.src = saved.photo;
+      if (saved.vip) { vipCheck.checked = true; vipBadge.classList.add('show'); }
+      animateOnLoad();
+    });
+
+    // Update
+    nameInput.addEventListener('input', () => { userName.textContent = (nameInput.value || "YOUR NAME").toUpperCase(); saveData(); });
+    titleInput.addEventListener('input', () => { userTitle.textContent = titleInput.value || "TITLE GOES HERE"; saveData(); });
+    vipCheck.addEventListener('change', () => { vipBadge.classList.toggle('show', vipCheck.checked); saveData(); });
+
+    // Crop
+    uploadBtn.addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        cropImage.src = ev.target.result;
+        cropModal.style.display = 'flex';
+        setTimeout(() => {
+          if (cropper) cropper.destroy();
+          cropper = new Cropper(cropImage, { aspectRatio: 1, viewMode: 1, autoCropArea: 0.9 });
+        }, 100);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    cropConfirm.addEventListener('click', () => {
+      if (cropper) {
+        const url = cropper.getCroppedCanvas({ width: 330, height: 330 }).toDataURL('image/jpeg', 0.98);
+        userPhoto.src = url;
+        saveData();
+        cropModal.style.display = 'none';
+        cropper.destroy();
+      }
+    });
+
+    cropCancel.addEventListener('click', () => {
+      cropModal.style.display = 'none';
+      if (cropper) cropper.destroy();
+    });
+
+    // Save
+    function saveData() {
+      localStorage.setItem('ashakaDarkFlyer', JSON.stringify({
+        name: nameInput.value,
+        title: titleInput.value,
+        photo: userPhoto.src,
+        vip: vipCheck.checked
+      }));
+    }
+
+    // Download (NO OPACITY LOSS)
+    downloadBtn.addEventListener('click', () => {
+      document.querySelector('.controls').style.display = 'none';
+      html2canvas(document.getElementById('flyer'), {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: null,
+        logging: false,
+        allowTaint: false,
+        foreignObjectRendering: false
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Ashaka_Facebook_Connect_Dark_${nameInput.value || 'Guest'}.png`;
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.click();
+        document.querySelector('.controls').style.display = 'block';
+      });
+    });
+
+    function animateOnLoad() {
+      document.querySelectorAll('.animate').forEach((el, i) => {
+        el.style.animationDelay = `${i * 0.25}s`;
+      });
+    }
+  </script>
+</body>
+</html>
